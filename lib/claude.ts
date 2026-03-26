@@ -1,7 +1,8 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const minimax = new OpenAI({
+  apiKey: process.env.MINIMAX_API_KEY,
+  baseURL: "https://api.minimax.chat/v1",
 });
 
 const SYSTEM_PROMPT = `你是 Coco 的数字分身，基于「生命之流」哲学体系。
@@ -24,11 +25,14 @@ const SYSTEM_PROMPT = `你是 Coco 的数字分身，基于「生命之流」哲
 - 避免过于学术化的表达`;
 
 export async function chatWithClaude(userMessage: string): Promise<string> {
-  const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-6-20251107",
+  const response = await minimax.chat.completions.create({
+    model: "MiniMax-Text-01",
     max_tokens: 1024,
-    system: SYSTEM_PROMPT,
     messages: [
+      {
+        role: "system",
+        content: SYSTEM_PROMPT,
+      },
       {
         role: "user",
         content: userMessage,
@@ -36,5 +40,5 @@ export async function chatWithClaude(userMessage: string): Promise<string> {
     ],
   });
 
-  return response.content[0].type === "text" ? response.content[0].text : "抱歉，我需要一点时间来思考...";
+  return response.choices[0]?.message?.content ?? "抱歉，我需要一点时间来思考...";
 }
