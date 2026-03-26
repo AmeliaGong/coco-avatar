@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 15, 23, 42;
+  --background-end-rgb: 15, 15, 30;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  min-height: 100vh;
+}
+
+.chat-container {
+  @apply flex flex-col h-[calc(100vh-120px)] max-w-3xl mx-auto;
+}
+
+.message {
+  @apply p-4 rounded-lg max-w-[80%] animate-fade-in;
+}
+
+.message-user {
+  @apply bg-indigo-600/30 self-end ml-auto;
+}
+
+.message-avatar {
+  @apply bg-gradient-to-br from-indigo-500 to-purple-600 self-start mr-auto;
+}
